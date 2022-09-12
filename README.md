@@ -28,13 +28,13 @@ docker run --rm -v <source_volume>:<target_volume> opendss <input_path> <output_
 Running the following command with the given example from **UNIX/WSL** terminal after building the Docker image.
 
 ```
-docker run --rm -v $(pwd):$(pwd) opendss $(pwd)/Main_GNF.DSS Main_GNF.json
+docker run --rm -v "$(pwd)":"$(pwd)" opendss "$(pwd)"/Main_GNF.DSS Main_GNF.json
 ```
 
 Running on **Windows** requires manually setting the folder structure as follows.
 
 ```
-docker run --rm -v ${PWD}:/usr/src/app/data opendss /usr/src/app/data/Main_GNF.DSS Main_GNF.json
+docker run --rm -v "${PWD}":/usr/src/app/data opendss /usr/src/app/data/Main_GNF.DSS Main_GNF.json
 ```
 
 This should generate a `./Main_GNF.json` file and output the following to the terminal:
