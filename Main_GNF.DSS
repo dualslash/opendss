@@ -1,0 +1,45 @@
+// -------------------------------------------------------------------------------//
+// Main File OpenDSS - Simple GNF -> DSS test
+// by Ir. G. Verhoeven
+// Electrical Energy Systems Group, Dep. of Electrical Engineering
+// Eindhoven University of Technology, The Netherlands
+// v.1 06/07/2022
+// -------------------------------------------------------------------------------//
+
+Clear
+
+Set DefaultBaseFrequency=50
+
+! Swing or Source Bar 
+New circuit.test phases=3 pu=1.0 basekv=10.25 bus1=0
+
+! Trafo
+New Transformer.Trafo phases=3 windings=2 XHL=6
+~ wdg=1 bus=0 kV=10.25 kVA=400 conn=delta
+~ Wdg=2 bus=4.1.2.3 kV=0.405 kVA=400 conn=wye
+~ %Loadloss=0.15 %imag=2 %noload=0.015  
+
+! LineCodes 
+New   LineCode.4_50_VGVMvKhas_Alk_4_2p5 nphases=3 R1=0.641 	X1=0.085 R0=1.65 X0=0.15 C1=0.54 C0=0.32
+New	  LineCode.Vulto_4x6_Cu 	        nphases=3 R1 = 1.026666667 X1 = 0.035666667	C1 = 0.062	R0 = 2.366666667 X0 = 0.073333333 C0 = 0.036666667
+
+! Lines 
+New  Line.LINE1		Phases=3	Bus1=4.1.2.3	Bus2=1.1.2.3	LineCode=4_50_VGVMvKhas_Alk_4_2p5 	Length=0.1	Units=km
+New  Line.LINE2		Phases=3	Bus1=4.1.2.3	Bus2=2.1.2.3	LineCode=4_50_VGVMvKhas_Alk_4_2p5 	Length=0.05	Units=km
+New  Line.LINE3		Phases=3	Bus1=4.1.2.3	Bus2=3.1.2.3	LineCode=4_50_VGVMvKhas_Alk_4_2p5 	Length=0.35	Units=km
+New  Line.LINE4		Phases=3	Bus1=1.1.2.3	Bus2=7.1.2.3	LineCode=Vulto_4x6_Cu 	Length=0.015  Units=km
+New  Line.LINE5		Phases=3	Bus1=2.1.2.3	Bus2=8.1.2.3	LineCode=Vulto_4x6_Cu 	Length=0.015  Units=km
+New  Line.LINE6		Phases=3	Bus1=3.1.2.3	Bus2=9.1.2.3	LineCode=Vulto_4x6_Cu 	Length=0.015  Units=km
+
+!LOAD DEFINITIONS 
+New Load.USER1   Phases=3  Bus1=7.1.2.3   Model=1  Conn=wye kV=0.4 kW=12 PF=1 Vmaxpu=1.15 Vminpu=0.60 
+New Load.USER2   Phases=3  Bus1=8.1.2.3    Model=1 Conn=wye kV=0.4 kW=9 PF=1 Vmaxpu=1.15 Vminpu=0.60 
+New Load.USER3   Phases=3  Bus1=9.1.2.3   Model=1  Conn=wye kV=0.4 kW=8 PF=1 Vmaxpu=1.15 Vminpu=0.60 
+
+! Final Configurations
+Set VoltageBases = [10.25, 0.4]
+CalcVoltageBases
+
+! Solve
+Set mode=snapshot
+! Solve

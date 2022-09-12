@@ -1,0 +1,1 @@
+docker run --rm -v ${PWD}:/usr/src/app/data opendss /usr/src/app/data/Main_GNF.DSS Main_GNF.json
